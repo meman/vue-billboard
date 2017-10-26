@@ -2,19 +2,27 @@ import { bb } from "billboard.js";
 
 export const createGenerateChart = (instance) => {
   /**
-   * TODO: documention
+   * @function generateChart
+   * 
+   * @description 
+   * generates the charts bases on the options instance
+   * 
+   * @returns {Object} the generated chart instance
    */
   return () => {
-    return bb.generate({
-      data: instance.options,
+    const options = Object.assign({
       bindto: instance.$el,
-    });
+    }, instance.options);
+    return bb.generate(options);
   }
 }
 
 export const createDestoryChart = (instance) => {
   /**
-   * TODO: documention
+   * @function destoryChart
+   * 
+   * @description
+   * destorys the chart and sets ref to null
    */
   return () => {
     try {
@@ -23,5 +31,22 @@ export const createDestoryChart = (instance) => {
     } catch (error) {
       console.error('Internal Billboard.js error', error);
     }
+  }
+}
+
+export const createLoadDataChart = (instance) => {
+  /**
+   * @function loadDataChart
+   * 
+   * @description
+   * Updates the chart with the new data
+   * 
+   * @param {object} options from instance to update the chart with
+   */
+  return (data) => {
+    if(!instance.$chart){
+      instance.$chart = instance.generateChart(instance.options);
+    }
+    instance.$chart.load(data);
   }
 }
