@@ -1,21 +1,25 @@
 import Vue from 'vue';
-import BillboardChart from './components/BillboardChart.vue';
-
-
-const chartData = {
-  "columns": [
-    ["data1", false, 200, 100, 400, 150, 250],
-    ["data2", 50, 20, 10, 40, 15, 25]
-      ]
-  };
+import BillboardChart from './components/BillboardChart/index.vue';
 
 new Vue({
   el: '#app',
-  data(){
+  data() {
     return {
-      chartData
+      chartData: {},
     }
   },
-  components: {BillboardChart},
-  template: `<div><billboard-chart :options='chartData'/></div>`
+  methods: {
+    randomize() {
+      const dataName = `data ${this.chartData.columns ? this.chartData.columns.length + 1: 0}`;
+      const randomArray = [...Array(12)].map(n => Math.round(Math.random() * 100));
+      this.chartData = {
+        columns: [...(this.chartData.columns || []), [dataName, ...randomArray]],
+      };
+    }
+  },
+  components: { BillboardChart },
+  template: `<div>
+    <button @click='randomize'>random option</button>\
+    <billboard-chart :options = 'chartData' />
+  </div>`
 })
