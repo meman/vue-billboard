@@ -3,19 +3,14 @@ import {
   createGenerateChart,
   createDestoryChart,
   createLoadDataChart
-} from "./instanceMethods";
+} from "./chartMethods";
 import equal from "deep-equal";
-
 export default {
+  name: "billboard-chart",
   props: {
     options: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    optionsWithoutData() {
-      return Object.assign({}, this.options, { data: undefined });
     }
   },
   created() {
@@ -31,12 +26,12 @@ export default {
     this.destoryChart();
   },
   watch: {
-    "options.data": function(after, before) {
-      const hasChanged = !equal(after, before);
-      if (hasChanged) {
-        this.loadDataChart(after);
+    "options.data": {
+      deep: true,
+      handler(newData) {
+        this.loadDataChart(newData);
       }
-    },
+    }
   }
 };
 </script>
